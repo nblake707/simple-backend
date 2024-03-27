@@ -1,12 +1,16 @@
-const express = require('express');
+const express = require('express')
 const cors = require('cors')
-const app = express();
+const app = express()
 
 // middleware parses incoming requests with JSON payloads
-app.use(express.json());
+app.use(express.json())
 
 // middleware enables CORS
-app.use(cors());
+app.use(cors())
+
+// middleware used to show static content
+// Express will first check here upon receiving a request
+app.use(express.static('dist'))
 
 let notes = [
   {
@@ -39,7 +43,7 @@ const generateId = () => {
       : 0;
 
   return maxId;
-};
+}
 
 app.post("/api/notes", (request, response) => {
   const body = request.body;
@@ -59,7 +63,7 @@ app.post("/api/notes", (request, response) => {
   notes = notes.concat(note);
 
   response.json(note);
-});
+})
 
 app.get("/api/notes/:id", (request, response) => {
   const id = Number(request.params.id);
@@ -67,18 +71,18 @@ app.get("/api/notes/:id", (request, response) => {
 
   // Objects = truthy & undefined = falsy
   note ? response.json(note) : response.status(404).end();
-});
+})
 
 app.get("/api/notes", (req, res) => {
   res.json(notes);
-});
+})
 
 app.delete("/api/notes/:id", (request, response) => {
   const id = Number(request.params.id);
   notes = notes.filter((note) => note.id !== id);
 
   response.status(204).end();
-});
+})
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT);
