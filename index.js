@@ -14,7 +14,7 @@ app.use(cors());
 
 // middleware parses incoming requests with JSON payloads - must come before handler functions
 app.use(express.json());
-app.use(requestLogger);
+// app.use(requestLogger);
 
 /*  body property would be undefined without the json-parser
     json-parser takes the JSON data of a request, transforms it into 
